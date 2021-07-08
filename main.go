@@ -9,9 +9,9 @@ import (
 )
 
 type templateHandler struct {
-	once sync.Once
+	once     sync.Once
 	filename string
-	templ *template.Template
+	templ    *template.Template
 }
 
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
