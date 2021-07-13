@@ -26,10 +26,9 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := newRoom()
 
-	go r.run()
-
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
+	go r.run()
 
 	log.Println("starting the gupshup server")
 
