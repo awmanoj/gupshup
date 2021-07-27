@@ -21,7 +21,7 @@
 				var msgBox = $("#chatbox textarea");
 				var messages = $("#messages");
 
-				$("chatbox").submit(function(){
+				$("#chatbox").submit(function(){
 					if (!msgBox.val()) return false;
 					if (!socket) {
 						alert("Error: There is no socket connection.");
@@ -29,7 +29,7 @@
 					}
 					socket.send(msgBox.val());
 					msgBox.val("");
-					return true;
+					return false;
 				});
 
 				if (!window["WebSocket"]) {
@@ -45,6 +45,7 @@
 				}
 			});
 		</script>
+
 	</body>
 </html>
 
