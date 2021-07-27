@@ -34,16 +34,13 @@ func (r *room) run() {
 		select {
 		case client := <-r.join:
 			r.clients[client] = true
-			log.Println("client joining:", client)
 		case client := <-r.leave:
 			delete(r.clients, client)
 			close(client.send)
-			log.Println("client leaving:", client)
 		case msg := <-r.forward:
 			for client := range r.clients {
 				select {
 				case client.send <- msg:
-					log.Println("run :: sent msg:", msg)
 				default:
 					delete(r.clients, client)
 					close(client.send)
