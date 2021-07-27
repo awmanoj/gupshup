@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"html/template"
 	"log"
 	"net/http"
@@ -20,20 +21,21 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			"templates", t.filename)))
 	})
 
-	t.templ.Execute(w, nil)
+	t.templ.Execute(w, r)
 }
 
 func main() {
+	var addr = flag.String("addr", ":8080", "The addr of the application.")
+	flag.Parse()
 	r := newRoom()
 
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 	go r.run()
 
-	log.Println("starting the gupshup server")
-
 	// start the web server
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+	log.Println("starting the gupshup server on", *addr)
+	if err := http.ListenAndServe(*addr, nil); err != nil {
 		log.Fatal("ListenAndServer:", err)
 	}
 }
