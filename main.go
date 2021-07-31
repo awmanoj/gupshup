@@ -2,12 +2,14 @@ package main
 
 import (
 	"flag"
+	"github.com/awmanoj/gupshup/trace"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/github"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
-	"github.com/awmanoj/gupshup/trace"
 	"sync"
 )
 
@@ -29,6 +31,12 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func main() {
 	var addr = flag.String("addr", ":8080", "The addr of the application.")
 	flag.Parse()
+
+	gomniauth.SetSecurityKey("batman")
+	gomniauth.WithProviders(
+		github.New("d618a51b57b8d13b1e76", "c4a6cad37e253572bfd52fc80accb0fbebf54ab0",
+			"http://localhost:8080/auth/callback/github"))
+
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
 
